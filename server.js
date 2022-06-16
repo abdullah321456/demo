@@ -36,6 +36,8 @@ mongoose.connect(process.env.MONGODB_URL, options).then(() => {
     console.log("Connected to MongoDB")
     app.listen(process.env.PORT || 8080, () => {
         console.log(`Listening to port ${process.env.PORT || 8080}`);
+
+
     });
 });
 
@@ -73,7 +75,7 @@ app.get("/:page/:perPage/:requireTotalPages", async (req, res) => {
         const perPage = req.params.perPage,
             requireTotalPages = req.params.requireTotalPages,
             page = req.params.page;
-        const users = await User.find().limit(perPage).skip(perPage * page).sort({Name: 'asc'});
+        const users = await User.find().limit(perPage).skip(perPage * page).sort({name_off: 'asc'});
         if (requireTotalPages == "true") {
             const totalPages = await User.count();
             res.status(200).json({users, totalPages})
@@ -97,7 +99,7 @@ app.post('/search', async (req, res) => {
         }
     }
     try {
-        const users = await User.find(filteredSearch).limit(perPage).skip(perPage * page).sort({Name: 'asc'});
+        const users = await User.find(filteredSearch).limit(perPage).skip(perPage * page).sort({name_off: 'asc'});
         const totalPages = await User.find(filteredSearch).count();
         res.status(200).json({users,totalPages});
     } catch (e) {
